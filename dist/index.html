@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>あなたに合う給付金・減税・お得制度を3秒診断 | 給付金・お得制度ポケット</title>
+  <meta name="description" content="国の給付金・補助金・税制優遇から民間の学割・高還元サービスまで、あなたの属性に合う制度だけを瞬時に抽出します。">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..600,0..1,-50..200&display=swap">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #0f766e;
+      --accent-hover: #115e59;
+      --accent-light: #f0fdfa;
+      --badge-public: #1d4ed8;
+      --badge-tax: #047857;
+      --badge-private: #b45309;
+      --warn-bg: #fffbeb;
+      --warn-border: #fde68a;
+      --warn-text: #92400e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 1.1rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 840px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header-tag {
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .container { max-width: 840px; margin: 0 auto; padding: 24px 16px 64px; }
+
+    .hero { margin-bottom: 20px; }
+    .hero h1 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
+    .hero p { font-size: 0.9rem; color: var(--muted); }
+
+    /* フィルターパネル */
+    .filter-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      margin-bottom: 18px;
+    }
+    .filter-group { margin-bottom: 14px; }
+    .filter-group:last-child { margin-bottom: 0; }
+    .filter-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .chip:hover { border-color: var(--accent); }
+    .chip.active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    /* サマリーバー */
+    .summary-bar {
+      background: var(--accent-light);
+      border: 1px solid #99f6e4;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .summary-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .summary-num { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+    .reset-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* カード一覧 */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .card-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .badge-group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #fff;
+    }
+    .badge-public { background: var(--badge-public); }
+    .badge-tax { background: var(--badge-tax); }
+    .badge-private { background: var(--badge-private); }
+    .badge-online {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #ecfeff;
+      color: #0e7490;
+      border: 1px solid #a5f3fc;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .effort {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
+    .benefit-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.92rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .card-summary { font-size: 0.9rem; color: #334155; margin-bottom: 12px; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--bg);
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .cta-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      background: var(--text);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 10px 16px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+    .cta-btn:hover { opacity: 0.92; }
+    .cta-btn.affiliate { background: var(--accent); }
+    .cta-btn.affiliate:hover { background: var(--accent-hover); }
+    .pr-note { font-size: 0.7rem; color: var(--muted); text-align: right; margin-top: 4px; }
+
+    /* 属性別LPナビ */
+    .seo-nav {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .seo-nav h2 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .seo-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .seo-links a {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .seo-links a:hover { border-color: var(--accent); }
+
+    /* 免責事項・法務表記・フッター */
+    .legal-section {
+      margin-top: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .legal-section h2 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .disclaimer-box {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      color: var(--warn-text);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      margin-bottom: 14px;
+    }
+    .legal-list {
+      list-style: none;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+    }
+    .legal-list li strong { color: var(--text); }
+
+    footer {
+      max-width: 840px;
+      margin: 24px auto 0;
+      padding: 0 16px 32px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="./index.html" class="logo">
+      <span class="material-symbols-outlined">account_balance_wallet</span>
+      <span>給付金・お得制度ポケット</span>
+    </a>
+    <span class="header-tag">国の制度・税制・民間特典</span>
+  </div>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <h1>あなたに合う給付金・減税・お得制度を3秒診断</h1>
+    <p>条件をタップするだけ。国の給付金・減税・補助金と、組み合わせやすい民間特典から対象候補を抽出します。</p>
+  </section>
+
+  <section class="filter-box" aria-label="診断条件">
+    <div class="filter-group">
+      <span class="filter-label">
+        <span class="material-symbols-outlined">badge</span>
+        <span>1. 現在の立場・属性</span>
+      </span>
+      <div class="chip-row" data-filter="role">
+        <button type="button" class="chip active" data-val="all">すべて</button>
+        <button type="button" class="chip" data-val="student">
+          <span class="material-symbols-outlined">school</span>学生
+        </button>
+        <button type="button" class="chip" data-val="employee">
+          <span class="material-symbols-outlined">apartment</span>会社員・公務員
+        </button>
+        <button type="button" class="chip" data-val="freelance">
+          <span class="material-symbols-outlined">laptop_mac</span>フリーランス・自営
+        </button>
+        <button type="button" class="chip" data-val="homemaker">
+          <span class="material-symbols-outlined">home</span>主婦・主夫
+        </button>
+        <button type="button" class="chip" data-val="unemployed">
+          <span class="material-symbols-outlined">work_history</span>求職中・その他
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">
+        <span class="material-symbols-outlined">calendar_today</span>
+        <span>2. 年齢層</span>
+      </span>
+      <div class="chip-row" data-filter="age">
+        <button type="button" class="chip active" data-val="all">すべて</button>
+        <button type="button" class="chip" data-val="18_22">18〜22歳</button>
+        <button type="button" class="chip" data-val="20s">23〜29歳</button>
+        <button type="button" class="chip" data-val="30s">30代</button>
+        <button type="button" class="chip" data-val="40s_50s">40〜50代</button>
+        <button type="button" class="chip" data-val="60plus">60歳以上</button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">
+        <span class="material-symbols-outlined">tune</span>
+        <span>3. 目的・関心</span>
+      </span>
+      <div class="chip-row" data-filter="purpose">
+        <button type="button" class="chip active" data-val="all">すべて</button>
+        <button type="button" class="chip" data-val="cash_tax">
+          <span class="material-symbols-outlined">payments</span>現金給付・減税・投資
+        </button>
+        <button type="button" class="chip" data-val="reskilling">
+          <span class="material-symbols-outlined">menu_book</span>資格・学び直し
+        </button>
+        <button type="button" class="chip" data-val="housing_energy">
+          <span class="material-symbols-outlined">solar_power</span>住宅・省エネ改修
+        </button>
+        <button type="button" class="chip" data-val="telecom_sub">
+          <span class="material-symbols-outlined">credit_card</span>通信・クレカ・サブスク
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="summary-bar">
+    <div class="summary-item">
+      <span class="material-symbols-outlined">checklist</span>
+      <span>該当候補：<span id="result-count" class="summary-num">0</span> 件</span>
+    </div>
+    <div class="summary-item">
+      <span class="material-symbols-outlined">savings</span>
+      <span>目安合計（参考）：<span id="benefit-sum" class="summary-num">0</span> 円〜</span>
+    </div>
+    <button type="button" id="reset-btn" class="reset-btn">
+      <span class="material-symbols-outlined">restart_alt</span>
+      <span>条件をリセット</span>
+    </button>
+  </div>
+
+  <div id="cards-container"></div>
+
+  <nav class="seo-nav">
+    <h2>
+      <span class="material-symbols-outlined">explore</span>
+      <span>属性別のまとめページから探す</span>
+    </h2>
+    <div class="seo-links">
+      <a href="./index.html">総合トップ（全診断）</a>
+      <a href="./student.html">大学生・学生向け</a>
+      <a href="./employee.html">会社員・公務員向け</a>
+      <a href="./freelance.html">フリーランス・個人事業主向け</a>
+    </div>
+  </nav>
+
+  <section class="legal-section" id="disclaimer">
+    <h2>
+      <span class="material-symbols-outlined">gavel</span>
+      <span>免責事項・アフィリエイト表記・ご利用にあたって</span>
+    </h2>
+    <div class="disclaimer-box">
+      <strong>【重要】情報の正確性・受給可否に関する免責：</strong>
+      本サイトは公的制度や民間サービスの候補を整理・案内する情報提供ツールであり、個別の受給資格・控除額・給付額を保証するものではありません。制度の要件・予算枠・申請期限は法改正や運用変更により随時更新されるため、申請・契約前には必ず各省庁・自治体・提供企業の公式案内をご確認ください。
+    </div>
+    <ul class="legal-list">
+      <li>
+        <strong>アフィリエイトプログラム（PR）について：</strong>
+        当サイトの一部リンクにはアフィリエイトプログラム（成果報酬型広告）が含まれます。リンク経由で口座開設・申込・契約等が行われた場合、運営者に報酬が支払われることがありますが、制度の選定基準や公平性を損なう意図はありません。
+      </li>
+      <li>
+        <strong>目安合計金額の扱いについて：</strong>
+        表示される「目安合計」は、各制度に設定された参考数値の単純合算であり、実際の支給額・節税額・還元額を確約するものではありません（所得制限・扶養状況・利用実績により変動します）。
+      </li>
+      <li>
+        <strong>アクセス解析・Cookieについて：</strong>
+        サービス改善や利便性向上のためにアクセス解析ツールやCookie等を利用する場合があります。個人を特定する氏名・住所・マイナンバー等の入力は求めません。
+      </li>
+    </ul>
+  </section>
+</div>
+
+<footer>
+  <span>© 給付金・お得制度ポケット</span>
+  <span><a href="#disclaimer" style="color:inherit;">免責事項・広告表記</a></span>
+</footer>
+
+<script>
+  const BENEFITS_DATA = [{"id": "koyou-kunren-ippan", "type": "public", "type_label": "国の給付金", "title": "一般教育訓練給付金", "benefit_amount": "最大10万円給付", "benefit_numeric": 100000, "effort_level": 3, "online_ok": false, "deadline": "受講開始の1ヶ月前まで（通年）", "roles": ["employee", "freelance", "unemployed"], "ages": ["20s", "30s", "40s_50s"], "situations": ["single", "rent", "own", "parent"], "purposes": ["cash_tax", "reskilling"], "summary": "厚生労働大臣指定の資格講座・スクールを修了すると、受講費用の20%（上限10万円）がハローワークから支給される制度。", "condition_note": "雇用保険の被保険者期間が通算3年以上（初回は1年以上）あること。", "cta_text": "厚労省の対象講座検索を見る", "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/jinzaikaihatsu/kyouiku.html", "is_affiliate": false}, {"id": "furusato-nozei", "type": "tax", "type_label": "税制優遇", "title": "ふるさと納税（自己負担2,000円）", "benefit_amount": "実質2,000円で返礼品＋税控除", "benefit_numeric": 30000, "effort_level": 2, "online_ok": true, "deadline": "毎年12月31日決済分まで", "roles": ["employee", "freelance"], "ages": ["20s", "30s", "40s_50s", "60plus"], "situations": ["single", "rent", "own", "parent"], "purposes": ["cash_tax"], "summary": "任意の自治体に寄付することで、寄付額のうち2,000円を超える部分が所得税の還付・住民税の控除として全額戻ってくる制度。", "condition_note": "ワンストップ特例制度を使えば確定申告も不要（年間5自治体以内）。", "cta_text": "控除上限額をシミュレートする", "url": "https://example.com/affiliate-furusato", "is_affiliate": true}, {"id": "nisa-tsumitate", "type": "tax", "type_label": "非課税制度", "title": "NISA（つみたて投資枠・成長投資枠）", "benefit_amount": "運用益が非課税（生涯最大1,800万円）", "benefit_numeric": 180000, "effort_level": 1, "online_ok": true, "deadline": "通年（いつでも開始可能）", "roles": ["student", "employee", "freelance", "homemaker", "unemployed"], "ages": ["18_22", "20s", "30s", "40s_50s", "60plus"], "situations": ["single", "rent", "own", "parent"], "purposes": ["cash_tax"], "summary": "通常なら利益に約20.315%かかる税金がゼロになる国の資産形成制度。クレカ積立と組み合わせるとポイント還元も上乗せ可能。", "condition_note": "18歳以上の日本国内居住者が対象。銀行よりネット証券の方が手数料・ポイント面で有利。", "cta_text": "ポイント還元率が高いネット証券を比較", "url": "https://example.com/affiliate-securities", "is_affiliate": true}, {"id": "student-prime-card", "type": "private", "type_label": "民間・学割特典", "title": "学生限定サブスク＆高還元クレカ連携", "benefit_amount": "年間 約15,000円〜25,000円節約", "benefit_numeric": 20000, "effort_level": 1, "online_ok": true, "deadline": "在学中いつでも", "roles": ["student"], "ages": ["18_22", "20s"], "situations": ["single", "rent"], "purposes": ["telecom_sub"], "summary": "学割サブスク（Prime Student等）と、対象のコンビニ・飲食店で還元率が上がる学生向け年会費無料カードの組み合わせ。", "condition_note": "大学・専門学校等のメールアドレスまたは学生証で認証可能。", "cta_text": "学生向け高還元カードの詳細を見る", "url": "https://example.com/affiliate-student-card", "is_affiliate": true}, {"id": "mado-renovation-2026", "type": "public", "type_label": "国の補助金", "title": "先進的窓リノベ事業（断熱改修支援）", "benefit_amount": "最大100万円〜補助（工事費の約50%相当）", "benefit_numeric": 500000, "effort_level": 2, "online_ok": false, "deadline": "予算上限に達し次第終了", "roles": ["employee", "freelance", "homemaker", "unemployed"], "ages": ["30s", "40s_50s", "60plus"], "situations": ["own", "moving"], "purposes": ["housing_energy", "cash_tax"], "summary": "既存住宅の窓を断熱性の高い内窓・外窓に交換するリフォームに対し、国から高額の補助金が交付される制度。", "condition_note": "申請手続きは登録事業者（リフォーム会社）が代行するため、個人での書類作成はほぼ不要。", "cta_text": "補助金対応の優良リフォーム会社を一括比較", "url": "https://example.com/affiliate-renovation", "is_affiliate": true}];
+  const INITIAL_STATE = {"role": "all", "age": "all", "purpose": "all"};
+
+  const state = {
+    role: INITIAL_STATE.role || 'all',
+    age: INITIAL_STATE.age || 'all',
+    purpose: INITIAL_STATE.purpose || 'all'
+  };
+
+  function renderEffortText(level) {
+    const labels = {
+      1: '★☆☆☆☆（とても簡単）',
+      2: '★★☆☆☆（やや簡単）',
+      3: '★★★☆☆（標準・書類あり）',
+      4: '★★★★☆（手続きやや多め）',
+      5: '★★★★★（窓口・書類多め）'
+    };
+    return labels[level] || '★★★☆☆';
+  }
+
+  function syncChips() {
+    document.querySelectorAll('.chip-row').forEach(row => {
+      const key = row.dataset.filter;
+      row.querySelectorAll('.chip').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.val === state[key]);
+      });
+    });
+  }
+
+  function renderCards() {
+    const container = document.getElementById('cards-container');
+    const filtered = BENEFITS_DATA.filter(item => {
+      const matchRole = state.role === 'all' || item.roles.includes(state.role);
+      const matchAge = state.age === 'all' || item.ages.includes(state.age);
+      const matchPurpose = state.purpose === 'all' || item.purposes.includes(state.purpose);
+      return matchRole && matchAge && matchPurpose;
+    });
+
+    const totalNumeric = filtered.reduce((acc, cur) => acc + (Number(cur.benefit_numeric) || 0), 0);
+    document.getElementById('result-count').textContent = filtered.length;
+    document.getElementById('benefit-sum').textContent = totalNumeric.toLocaleString('ja-JP');
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="card" style="text-align:center; color:var(--muted);">
+          条件に一致する制度が見つかりませんでした。「条件をリセット」を押して別の組み合わせをお試しください。
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(item => `
+      <article class="card">
+        <div class="card-top">
+          <div class="badge-group">
+            <span class="badge badge-${item.type}">${item.type_label}</span>
+            ${item.online_ok ? `
+              <span class="badge-online">
+                <span class="material-symbols-outlined" style="font-size:0.9rem;">devices</span>
+                <span>オンライン対応</span>
+              </span>` : ''}
+          </div>
+          <span class="effort">
+            <span class="material-symbols-outlined" style="font-size:1rem;">assignment</span>
+            <span>手間度: ${renderEffortText(item.effort_level)}</span>
+          </span>
+        </div>
+        <h2 class="card-title">${item.title}</h2>
+        <div class="benefit-highlight">
+          <span class="material-symbols-outlined">monetization_on</span>
+          <span>${item.benefit_amount}</span>
+        </div>
+        <p class="card-summary">${item.summary}</p>
+        <div class="meta-grid">
+          <div><strong>主な対象条件：</strong>${item.condition_note}</div>
+          <div><strong>申請・申込期限：</strong>${item.deadline}</div>
+        </div>
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="cta-btn ${item.is_affiliate ? 'affiliate' : ''}">
+          <span>${item.cta_text}</span>
+          <span class="material-symbols-outlined">open_in_new</span>
+        </a>
+        ${item.is_affiliate ? '<div class="pr-note">※PR・プロモーションリンクを含みます</div>' : ''}
+      </article>
+    `).join('');
+  }
+
+  document.querySelectorAll('.chip-row').forEach(row => {
+    const filterKey = row.dataset.filter;
+    row.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state[filterKey] = btn.dataset.val;
+        syncChips();
+        renderCards();
+      });
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    state.role = 'all';
+    state.age = 'all';
+    state.purpose = 'all';
+    syncChips();
+    renderCards();
+  });
+
+  syncChips();
+  renderCards();
+</script>
+</body>
+</html>
